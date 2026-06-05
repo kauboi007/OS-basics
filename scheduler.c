@@ -4,7 +4,10 @@ int max(int a,int b){
     if(a>b) return a;
     return b;
 }
-
+int min(int a,int b){
+    if(a<b) return a;
+    return b;
+}
 struct process{
     int pid;
     int burst;
@@ -12,6 +15,7 @@ struct process{
     int finish;
     int turnover;
     int wait;
+    int remaining;
 };
 
 void init_process(int n,struct process*arr){
@@ -23,6 +27,7 @@ void init_process(int n,struct process*arr){
         scanf("%d",&p.burst);
         printf("enter start:");
         scanf("%d",&p.start);
+        p.remaining=p.burst;
         arr[i]=p;
     }
 }
@@ -39,6 +44,27 @@ void fcfs(int n,struct process*arr){
     }
 
 }
+void RR(int n,struct process*arr){
+    int quantum=4;
+    int done=0;
+    int time_elapsed=0;
+    while(done!=n){
+        for(int i=0;i<n;i++){
+            struct process*p=&arr[i];
+            if(p->remaining==0) continue;
+            time_elapsed=max(time_elapsed,p->start);
+            int run=min(quantum,p->remaining);
+            time_elapsed+=run;
+            p->remaining-=run;
+            if(p->remaining==0){
+                done+=1;
+                p->finish=time_elapsed;
+                p->turnover=p->finish-p->start;
+                p->wait=p->turnover-p->burst;
+            }
+        }
+    }
+}
 
 void print_results(int n,struct process*arr){
     int avg_time=0;
@@ -53,12 +79,13 @@ int comp(const void*a,const void*b){
     struct process *p2=(struct process*)b;
     return p1->start-p2->start;
 }
+
 int main(){
     int n=3;
     struct process arr[n];
     init_process(n,arr);
     qsort(arr,n,sizeof(struct process),comp);
-    fcfs(n,arr);
+    RR(n,arr);
     print_results(n,arr);
 
 }
