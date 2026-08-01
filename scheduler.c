@@ -1,5 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
+
+
+
 int max(int a,int b){
     if(a>b) return a;
     return b;
@@ -87,5 +90,6 @@ int main(){
     qsort(arr,n,sizeof(struct process),comp);
     RR(n,arr);
     print_results(n,arr);
+    return 0;
 
 }
