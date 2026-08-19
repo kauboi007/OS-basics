@@ -200,6 +200,26 @@ int main(){
     printf("FCFS : %.2f\n",*(double*)sfcfs);
     printf("RR : %.2f\n",*(double*)srr);
     printf("SJF : %.2f\n",*(double*)ssjf);
+
+    char best_algo[10];
+    double min_avg = res_fcfs;
+    strcpy(best_algo, "FCFS");
+
+    if (res_sjf < min_avg) {
+        min_avg = res_sjf;
+        strcpy(best_algo, "SJF");
+    }
+    if (res_rr < min_avg) {
+        min_avg = res_rr;
+        strcpy(best_algo, "RR");
+    }
+
+    printf("\nAlgo with minimum average waiting time is : %s (%.2f)\n", best_algo, min_avg);
+
+    free(arr_fcfs);
+    free(arr_rr);
+    free(arr_sjf);
+
     return 0;
 }
 
